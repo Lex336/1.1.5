@@ -15,17 +15,16 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     @Override
-    public void createUsersTable() throws SQLException {
+    public void createUsersTable() {
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS users " +
-                    "(id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50), last_name VARCHAR(50), age INT)");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS users " + "(id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50), last_name VARCHAR(50), age INT)");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void dropUsersTable() throws SQLException {
+    public void dropUsersTable() {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("DROP TABLE IF EXISTS users");
         } catch (SQLException e) {
@@ -34,7 +33,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     @Override
-    public void saveUser(String name, String lastName, byte age) throws SQLException {
+    public void saveUser(String name, String lastName, byte age) {
         try (PreparedStatement pstm = connection.prepareStatement("INSERT INTO users (name, last_name, age) VALUES (?, ?, ?)")) {
             pstm.setString(1, name);
             pstm.setString(2, lastName);
@@ -46,7 +45,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     @Override
-    public void removeUserById(long id) throws SQLException {
+    public void removeUserById(long id) {
         try (PreparedStatement pstm = connection.prepareStatement("DELETE FROM users WHERE id = ?")) {
             pstm.setLong(1, id);
             pstm.executeUpdate();
@@ -56,25 +55,23 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     @Override
-    public List<User> getAllUsers() throws SQLException {
+    public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
 
         try (ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM users")) {
-            while(resultSet.next()) {
-                User user = new User(resultSet.getString("name"),
-                        resultSet.getString("last_name"), resultSet.getByte("age"));
+            while (resultSet.next()) {
+                User user = new User(resultSet.getString("name"), resultSet.getString("last_name"), resultSet.getByte("age"));
                 user.setId(resultSet.getLong("id"));
                 users.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return users;
     }
 
     @Override
-    public void cleanUsersTable() throws SQLException {
+    public void cleanUsersTable() {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("TRUNCATE TABLE users");
         } catch (SQLException e) {

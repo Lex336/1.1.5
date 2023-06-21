@@ -3,6 +3,7 @@ package jm.task.core.jdbc.service;
 import jm.task.core.jdbc.dao.UserDao;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.util.Util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
     public UserServiceImpl() {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/kata", "root", "aA5771521");
+            Connection connection = Util.getConnection();
             userDao = new UserDaoJDBCImpl(connection);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -23,58 +24,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUsersTable() {
-        try {
+    public void createUsersTable() throws SQLException {
             userDao.createUsersTable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
-    public void dropUsersTable() {
-        try {
+    public void dropUsersTable() throws SQLException {
             userDao.dropUsersTable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
-    public void saveUser(String name, String lastName, byte age) {
-        try {
+    public void saveUser(String name, String lastName, byte age) throws SQLException {
             userDao.saveUser(name, lastName, age);
             System.out.println("User  с именем - " + name + " добавлен в базу данных");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
-    public void removeUserById(long id) {
-        try {
+    public void removeUserById(long id) throws SQLException {
             userDao.removeUserById(id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
-    public List<User> getAllUsers() {
-        try {
+    public List<User> getAllUsers() throws SQLException {
             return userDao.getAllUsers();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     @Override
-    public void cleanUsersTable() {
-        try {
+    public void cleanUsersTable() throws SQLException {
             userDao.cleanUsersTable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
