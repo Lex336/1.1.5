@@ -1,7 +1,6 @@
 package jm.task.core.jdbc.util;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -10,27 +9,23 @@ public class Util {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "aA5771521";
 
-    public static void main(String[] args) {
-        Connection connection;
-
+    public static Connection getConnection() {
         try {
-            Driver driver = new com.mysql.cj.jdbc.Driver();
-            DriverManager.registerDriver(driver);
-
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            return DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void closeConnection(Connection connection) throws SQLException {
+    public static void closeConnection(Connection connection) {
         if (connection != null) {
-            connection.close();
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
-    }
 
 }
