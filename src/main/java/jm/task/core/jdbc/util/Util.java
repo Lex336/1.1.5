@@ -12,7 +12,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import static org.hibernate.cfg.AvailableSettings.USER;
 
 public class Util {
     private static final String URL = "jdbc:mysql://localhost:3306/kata";
